@@ -1,6 +1,13 @@
-﻿namespace Authentication_API.Models
+﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Principal;
+
+namespace Authentication_API.Models;
+
+public class User : IdentityUser
 {
-    public class User
+    public DateTime DateBirth { get; set; }
+    public User() : base() 
     {
+        
     }
 }
