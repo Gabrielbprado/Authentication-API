@@ -11,18 +11,24 @@ namespace Authentication_API.Controllers;
 public class UserController : ControllerBase
 {
 
-    private CadastreService _cadastreService { get; set; }
+    private UserService _userService { get; set; }
 
-    public UserController(CadastreService cadastreService)
+    public UserController(UserService cadastreService)
     {
-        _cadastreService = cadastreService;
+        _userService = cadastreService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> PostUserAsync(CreatedUserDto dto)
+    [HttpPost("cadastre")]
+    public async Task<IActionResult> CreatedUser(CreatedUserDto dto)
     {
-       await _cadastreService.CadastreAsync(dto);
+       await _userService.CadastreAsync(dto);
         return Ok("User Cadastred Successfully");
+    }
+    [HttpPost("login")]
+    public async Task <IActionResult> SiginUser(LoginUserDto dto)
+    {
+        await _userService.LoginAsync(dto);
+        return Ok("Login Successfully Performed");
     }
 }
 
