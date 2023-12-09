@@ -2,12 +2,17 @@ using Authentication_API.Autorizes;
 using Authentication_API.Data;
 using Authentication_API.Models;
 using Authentication_API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("AuthenticationConnection");
+var connectionString = builder.Configuration["ConnectionStrings:AuthenticationConnection"];
 
 // Add services to the container.
 
@@ -20,9 +25,27 @@ builder.Services.AddDbContext<DataContext>(opts => opts.UseMySql(connectionStrin
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TokenService>();
+
 builder.Services.AddAuthorization(opts =>
 {
-    opts.AddPolicy("MinimumAge", MinimumAge(18));
+    opts.AddPolicy("MinimumAge",opts => opts.AddRequirements(new MinimumAge(18)));
+});
+builder.Services.AddSingleton<IAuthorizationHandler,ValidationAge>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
+
+    ValidateAudience = false,
+        ValidateIssuer = false,
+        ClockSkew = TimeSpan.Zero
+    };
 });
 
 var app = builder.Build();
@@ -35,6 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

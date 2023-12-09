@@ -26,7 +26,10 @@ public class UserService
     {
         User user = _mapper.Map<User>(dto);
         IdentityResult Result = await _userManager.CreateAsync(user, dto.Password);
-        if (!Result.Succeeded) throw new ApplicationException("Error the Registered a User");
+        if (!Result.Succeeded)
+        {
+            throw new ApplicationException("Error the Registered a User");
+        }
 
     }
 
