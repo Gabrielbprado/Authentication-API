@@ -1,3 +1,4 @@
+using Authentication_API.Autorizes;
 using Authentication_API.Data;
 using Authentication_API.Models;
 using Authentication_API.Services;
@@ -19,6 +20,10 @@ builder.Services.AddDbContext<DataContext>(opts => opts.UseMySql(connectionStrin
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("MinimumAge", MinimumAge(18));
+});
 
 var app = builder.Build();
 

@@ -37,7 +37,5 @@ public class UserService
         var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == dto.UserName.ToUpper());
         var token = _tokenService.GenerateToken(user);
         return token;
-
-
     }
 }
