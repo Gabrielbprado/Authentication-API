@@ -18,6 +18,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<DataContext>(opts => opts.UseMySql(connectionString,ServerVersion.AutoDetect(connectionString)));
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 

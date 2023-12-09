@@ -27,8 +27,8 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task <IActionResult> SiginUser(LoginUserDto dto)
     {
-        await _userService.LoginAsync(dto);
-        return Ok("Login Successfully Performed");
+       var token = await _userService.LoginAsync(dto);
+        return Ok($"Login Successfully Performed, Token Genereted: {token}");
     }
 }
 

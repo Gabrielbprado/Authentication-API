@@ -11,11 +11,15 @@ public class UserService
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    public UserService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+    private readonly TokenService _tokenService;
+
+    public UserService(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, TokenService token)
     {
         _mapper = mapper;
         _userManager = userManager;
         _signInManager = signInManager;
+        _tokenService = token;
+        
     }
 
     public async Task CadastreAsync(CreatedUserDto dto)
@@ -26,10 +30,14 @@ public class UserService
 
     }
 
-    public async Task LoginAsync(LoginUserDto dto)
+    public async Task<string> LoginAsync(LoginUserDto dto)
     {
         var result = await _signInManager.PasswordSignInAsync(dto.UserName, dto.Password, false, false);
         if (!result.Succeeded) throw new ApplicationException("Error ao perform the Login");
+        var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.NormalizedUserName == dto.UserName.ToUpper());
+        var token = _tokenService.GenerateToken(user);
+        return token;
+
 
     }
 }

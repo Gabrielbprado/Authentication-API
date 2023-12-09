@@ -49,3 +49,8 @@ C:\Authentication API\obj\Debug\net7.0\refint\Authentication API.dll
 C:\Authentication API\obj\Debug\net7.0\Authentication API.pdb
 C:\Authentication API\obj\Debug\net7.0\Authentication API.genruntimeconfig.cache
 C:\Authentication API\obj\Debug\net7.0\ref\Authentication API.dll
+C:\Authentication API\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Authentication API\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Authentication API\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Authentication API\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Authentication API\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
